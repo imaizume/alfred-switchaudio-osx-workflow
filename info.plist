@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>me.imaizu.preference.sound</string>
+	<string>me.imaizu.source.audio.switch</string>
 	<key>category</key>
 	<string>Productivity</string>
 	<key>connections</key>
@@ -90,11 +90,11 @@
 	<key>createdby</key>
 	<string>imaizume</string>
 	<key>description</key>
-	<string>サウンド設定をよしなに切り替える</string>
+	<string>Switch audio source or see current audio sources.</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Sound Preference</string>
+	<string>Switch Audio Source</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -408,7 +408,11 @@ puts ({ items: items.map { |item| item.dict } }) .to_json.chomp
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>You can easily switch audio source preference for both of input and output.
+Also can confirm current audio sources.
+
+Needs to install deweller/switchaudio-osx.
+Currently installation path is assumed as: /usr/local/bin/SwitchAudioSource</string>
 	<key>uidata</key>
 	<dict>
 		<key>0AB8330A-1303-46F5-812E-358AC2AB98B0</key>
@@ -468,7 +472,11 @@ puts ({ items: items.map { |item| item.dict } }) .to_json.chomp
 			<integer>490</integer>
 		</dict>
 	</dict>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>0.0.1</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/imaizume/alfred-switchaudio-osx-workflow</string>
 </dict>
 </plist>
