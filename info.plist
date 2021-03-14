@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>me.imaizu.preference.sound</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>0AB8330A-1303-46F5-812E-358AC2AB98B0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F4A2A1FE-4239-4082-81E4-2E1604F28C3F</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>1BB9916D-0288-48A6-9BEF-8EFD1E079CCF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5E4A0D01-D20B-4979-8D19-96A5A666631A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>20AC2A69-BD6D-4FE7-BCF8-460F7E329AF7</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3A21D37A-30D4-4B48-B594-3B7BFAACBA12</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>5E4A0D01-D20B-4979-8D19-96A5A666631A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>20AC2A69-BD6D-4FE7-BCF8-460F7E329AF7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>73DD1620-1C9E-4BEA-B908-D737568E739B</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>1BB9916D-0288-48A6-9BEF-8EFD1E079CCF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>9D54F3EE-0A84-4A07-A6E8-6CEFB4A36FE0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>1BB9916D-0288-48A6-9BEF-8EFD1E079CCF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>imaizume</string>
+	<key>description</key>
+	<string>サウンド設定をよしなに切り替える</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Sound Preference</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>cas</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>Change Audio Source</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>9D54F3EE-0A84-4A07-A6E8-6CEFB4A36FE0</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>please wait</string>
+				<key>script</key>
+				<string>require 'json'
+
+PATTERN = %r[^(.*)(\s+\((input|output)\)\s*)$]
+
+AudioDevice = Struct.new(:title) do
+  def name
+    m[1]
+  end
+
+  def io
+    m[3]
+  end
+
+  def uid
+    "#{self.name.downcase.gsub(/\s/, '_')}-#{self.io}"
+  end
+
+  def subtitle
+    "Change audio #{self.io} to #{self.name}"
+  end
+
+  def arg
+    "#{self.io},#{self.name}"
+  end
+
+  def dict
+    hash = {
+      uid: self.uid,
+      title: self.title,
+      autocomplete: self.title,
+      subtile: self.subtitle,
+      arg: self.arg
+    }
+  end
+
+  private
+
+  def m
+    title.chomp.match(PATTERN)
+  end
+end
+
+path = %s(/usr/local/bin/SwitchAudioSource)
+sources = `#{path} -a`
+args = ARGV[0].split().map { |s| Regexp.new(s) }
+# args = ARGV.map { |s| Regexp.compile(s, Regexp::IGNORECASE) }
+items = sources.split(/\n/)
+  .map { |source| AudioDevice.new(source) }
+  .filter { |source| args.inject(true) { |flag, arg| flag &amp;&amp; arg.match?(source.title) } }
+
+puts ({ items: items.map { |item| item.dict } }) .to_json.chomp
+</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>input / output</string>
+				<key>title</key>
+				<string>Change audio source</string>
+				<key>type</key>
+				<integer>2</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>1BB9916D-0288-48A6-9BEF-8EFD1E079CCF</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>soundname</key>
+				<string>Ping</string>
+				<key>systemsound</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.playsound</string>
+			<key>uid</key>
+			<string>3A21D37A-30D4-4B48-B594-3B7BFAACBA12</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string># coding: utf-8
+
+args = ARGV[0].split(",")
+io = args[0].chomp
+source = args[1].chomp
+puts `/usr/local/bin/SwitchAudioSource -t #{io} -s '#{source}'`</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>2</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>5E4A0D01-D20B-4979-8D19-96A5A666631A</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Audio Source Changed</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>20AC2A69-BD6D-4FE7-BCF8-460F7E329AF7</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>1310720</integer>
+				<key>hotstring</key>
+				<string>A</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>73DD1620-1C9E-4BEA-B908-D737568E739B</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>sas</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>See Audio Source</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>0AB8330A-1303-46F5-812E-358AC2AB98B0</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>require 'json'
+
+CurrentAudioDevice = Struct.new(:name, :io) do
+  def uid
+    "#{self.name.downcase.gsub(/\s/, '_')}"
+  end
+
+  def title
+    "Audio #{io.capitalize}: #{name}"
+  end
+
+  def dict
+    hash = {
+      uid: self.uid,
+      title: self.title,
+      autocomplete: self.name,
+    }
+  end
+end
+
+path = %s(/usr/local/bin/SwitchAudioSource)
+items = ["input", "output"].map { |io|
+  CurrentAudioDevice.new(`#{path} -c -t #{io}`.chomp, io)
+}
+
+puts ({ items: items.map { |item| item.dict } }) .to_json.chomp
+
+</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string></string>
+				<key>type</key>
+				<integer>2</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>F4A2A1FE-4239-4082-81E4-2E1604F28C3F</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>0AB8330A-1303-46F5-812E-358AC2AB98B0</key>
+		<dict>
+			<key>xpos</key>
+			<integer>50</integer>
+			<key>ypos</key>
+			<integer>490</integer>
+		</dict>
+		<key>1BB9916D-0288-48A6-9BEF-8EFD1E079CCF</key>
+		<dict>
+			<key>xpos</key>
+			<integer>210</integer>
+			<key>ypos</key>
+			<integer>245</integer>
+		</dict>
+		<key>20AC2A69-BD6D-4FE7-BCF8-460F7E329AF7</key>
+		<dict>
+			<key>xpos</key>
+			<integer>535</integer>
+			<key>ypos</key>
+			<integer>245</integer>
+		</dict>
+		<key>3A21D37A-30D4-4B48-B594-3B7BFAACBA12</key>
+		<dict>
+			<key>xpos</key>
+			<integer>695</integer>
+			<key>ypos</key>
+			<integer>245</integer>
+		</dict>
+		<key>5E4A0D01-D20B-4979-8D19-96A5A666631A</key>
+		<dict>
+			<key>xpos</key>
+			<integer>375</integer>
+			<key>ypos</key>
+			<integer>245</integer>
+		</dict>
+		<key>73DD1620-1C9E-4BEA-B908-D737568E739B</key>
+		<dict>
+			<key>xpos</key>
+			<integer>50</integer>
+			<key>ypos</key>
+			<integer>365</integer>
+		</dict>
+		<key>9D54F3EE-0A84-4A07-A6E8-6CEFB4A36FE0</key>
+		<dict>
+			<key>xpos</key>
+			<integer>50</integer>
+			<key>ypos</key>
+			<integer>245</integer>
+		</dict>
+		<key>F4A2A1FE-4239-4082-81E4-2E1604F28C3F</key>
+		<dict>
+			<key>xpos</key>
+			<integer>210</integer>
+			<key>ypos</key>
+			<integer>490</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
